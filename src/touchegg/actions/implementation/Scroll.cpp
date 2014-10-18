@@ -86,8 +86,9 @@ void Scroll::executeStart(const QHash<QString, QVariant>& /*attrs*/) {}
 
 void Scroll::executeUpdate(const QHash<QString, QVariant>& attrs)
 {
-    float deltaX = attrs.value(GEIS_GESTURE_ATTRIBUTE_DELTA_X).toFloat();
-    float deltaY = attrs.value(GEIS_GESTURE_ATTRIBUTE_DELTA_Y).toFloat();
+    int numFingers = attrs.value(GEIS_GESTURE_ATTRIBUTE_TOUCHES).toFloat();
+    float deltaX = attrs.value(GEIS_GESTURE_ATTRIBUTE_DELTA_X).toFloat() / numFingers;
+    float deltaY = attrs.value(GEIS_GESTURE_ATTRIBUTE_DELTA_Y).toFloat() / numFingers;
 
     // Vertical scroll
     if (deltaY > 0) {
