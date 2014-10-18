@@ -56,7 +56,10 @@ void DragAndDrop::executeStart(const QHash<QString, QVariant>& /*attrs*/)
 
 void DragAndDrop::executeUpdate(const QHash<QString, QVariant>& attrs)
 {
-    int numFingers = attrs.value(GEIS_GESTURE_ATTRIBUTE_TOUCHES).toFloat();
+    int numFingers = attrs.value(GEIS_GESTURE_ATTRIBUTE_TOUCHES).toInt();
+    int dx = attrs.value(GEIS_GESTURE_ATTRIBUTE_DELTA_X).toFloat() / numFingers * 0.6;
+    int dy = attrs.value(GEIS_GESTURE_ATTRIBUTE_DELTA_Y).toFloat() / numFingers * 0.6;
+
     if(startNumFingers == 0) {
         startNumFingers = numFingers;
     }
@@ -66,13 +69,7 @@ void DragAndDrop::executeUpdate(const QHash<QString, QVariant>& attrs)
     if (numFingers != startNumFingers)
         return;
     
-    /*
-    QCursor::setPos(QCursor::pos().x() + attrs.value(GEIS_GESTURE_ATTRIBUTE_DELTA_X).toFloat(),
-            QCursor::pos().y() + attrs.value(GEIS_GESTURE_ATTRIBUTE_DELTA_Y).toFloat());
-    */
-
-    QCursor::setPos(QCursor::pos().x() + (attrs.value(GEIS_GESTURE_ATTRIBUTE_DELTA_X).toFloat() / attrs.value(GEIS_GESTURE_ATTRIBUTE_TOUCHES).toFloat()),
-            QCursor::pos().y() + (attrs.value(GEIS_GESTURE_ATTRIBUTE_DELTA_Y).toFloat() / attrs.value(GEIS_GESTURE_ATTRIBUTE_TOUCHES).toFloat()));
+    QCursor::setPos(QCursor::pos().x() + dx, QCursor::pos().y() + dy);
 }
 
 void DragAndDrop::executeFinish(const QHash<QString, QVariant>& /*attrs*/)
